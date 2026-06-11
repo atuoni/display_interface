@@ -20,7 +20,7 @@ static const MenuItem_t screen4_menu[] =
 		 { "C1", MENU_LABEL, MENU_ID_NONE, NULL},
 		 { "C2", MENU_LABEL, MENU_ID_NONE, NULL},
 		 { "C3", MENU_NAVIGATION, SCREEN_5, NULL},
-		 {"Voltar", MENU_NAVIGATION, SCREEN_1, NULL}
+		 {"Back", MENU_NAVIGATION, SCREEN_1, NULL}
 };
 
 #define SCREEN4_COUNT (sizeof(screen4_menu)/sizeof(screen4_menu[0]))
