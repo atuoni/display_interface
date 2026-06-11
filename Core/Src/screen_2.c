@@ -1,36 +1,26 @@
-/**
- ******************************************************************************
- * @file    screen_config.c
- * @brief   Tela de configuração
- ******************************************************************************
+/*
+ * screen_2.c
+ *
+ *  Created on: 9 de jun. de 2026
+ *      Author: amtuo
  */
 
 #include "screen_2.h"
-
+#include "main.h"
 #include "menu.h"
 #include "encoder.h"
 #include "menu_widget.h"
 
-/*------------------------------------------------------------------
- * IDs dos itens
- *-----------------------------------------------------------------*/
-enum
-{
-    SCREEN2_A1,
-    SCREEN2_A2,
-    SCREEN2_A3,
-    SCREEN2_BACK
-};
 
 /*------------------------------------------------------------------
  * Tabela do menu
  *-----------------------------------------------------------------*/
 static const MenuItem_t screen2_menu[] =
 {
-    { "A1"   , SCREEN2_A1},
-    { "A2"   , SCREEN2_A2},
-    { "A3" , SCREEN2_A3},
-    { "Voltar", SCREEN2_BACK}
+		 { "A1", MENU_LABEL, MENU_ID_NONE, NULL},
+		 { "A2", MENU_LABEL, MENU_ID_NONE, NULL},
+		 { "A3", MENU_LABEL, MENU_ID_NONE, NULL},
+		 {"Voltar", MENU_NAVIGATION, SCREEN_1, NULL}
 };
 
 #define SCREEN2_COUNT (sizeof(screen2_menu)/sizeof(screen2_menu[0]))
@@ -76,66 +66,5 @@ static void screen2_draw(void)
  *-----------------------------------------------------------------*/
 static void screen2_event(void)
 {
-    EncoderEvent_t ev;
-
-    ev = encoder_get_event();
-
-    switch(ev)
-    {
-        case ENC_CW:
-
-            if(selected < (SCREEN2_COUNT - 1))
-            {
-                uint8_t old = selected;
-
-                selected++;
-
-                menu_widget_update(screen2_menu,old,selected);
-            }
-            break;
-
-        case ENC_CCW:
-
-            if(selected > 0)
-            {
-                uint8_t old = selected;
-
-                selected--;
-
-                menu_widget_update(screen2_menu,old,selected);
-            }
-            break;
-
-        case ENC_PRESS:
-
-            switch(screen2_menu[selected].id)
-            {
-                case SCREEN2_A1:
-
-                    /* abrir tela brilho */
-                    break;
-
-                case SCREEN2_A2:
-
-                    /* abrir tela contraste */
-                    break;
-
-                case SCREEN2_A3:
-
-                    /* executar reset */
-                    break;
-
-                case SCREEN2_BACK:
-
-                    menu_change(SCREEN_1);
-                    break;
-
-                default:
-                    break;
-            }
-            break;
-
-        default:
-            break;
-    }
+    menu_widget_event(screen2_menu, SCREEN2_COUNT, &selected);
 }

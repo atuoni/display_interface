@@ -1,37 +1,39 @@
+/*
+ * screen_1.c
+ *
+ *  Created on: 9 de jun. de 2026
+ *      Author: amtuo
+ */
+
 #include "screen_1.h"
 #include "menu.h"
-#include "encoder.h"
 #include "menu_widget.h"
-
-/*------------------------------------------------------------------
- * IDs locais
- *-----------------------------------------------------------------*/
-enum
-{
-    SCREEN1_A,
-    SCREEN1_B,
-    SCREEN1_C
-};
-
-/*------------------------------------------------------------------
- * Tabela
- *-----------------------------------------------------------------*/
-static const MenuItem_t screen1_menu[] =
-{
-    { "A", SCREEN1_A  },
-    { "B" , SCREEN1_B },
-    { "C" , SCREEN1_C }
-};
-
-#define SCREEN1_COUNT (sizeof(screen1_menu)/sizeof(screen1_menu[0]))
-
-static uint8_t selected = 0;
+#include "main.h"
 
 /*------------------------------------------------------------------
  * Protótipos
  *-----------------------------------------------------------------*/
 static void screen1_draw(void);
 static void screen1_event(void);
+static void led_toggle(void);
+
+
+/*------------------------------------------------------------------
+ * Tabela
+ *-----------------------------------------------------------------*/
+static MenuItem_t screen1_menu[] =
+{
+    { "A", MENU_NAVIGATION, SCREEN_2, NULL},
+    { "B", MENU_NAVIGATION, SCREEN_3, NULL},
+    { "C", MENU_NAVIGATION, SCREEN_4, NULL},
+	{ "LED: OFF", MENU_ACTION, 0, led_toggle}
+};
+
+#define SCREEN1_COUNT (sizeof(screen1_menu)/sizeof(screen1_menu[0]))
+
+static uint8_t selected = 0;
+static uint8_t led_state = 0;
+
 
 /*------------------------------------------------------------------
  * Tela
@@ -63,53 +65,15 @@ static void screen1_draw(void)
  *-----------------------------------------------------------------*/
 static void screen1_event(void)
 {
-    EncoderEvent_t ev;
+    menu_widget_event(screen1_menu, SCREEN1_COUNT, &selected);
+}
+static void led_toggle(void)
+{
+    led_state = !led_state;
 
-    ev = encoder_get_event();
+    HAL_GPIO_WritePin(LED_Pin_GPIO_Port,LED_Pin_Pin,led_state ? GPIO_PIN_SET : GPIO_PIN_RESET);
 
-    switch(ev)
-    {
-        case ENC_CW:
+    screen1_menu[3].text = led_state ? "LED: ON" : "LED: OFF";
 
-            if(selected < (SCREEN1_COUNT - 1))
-            {
-                uint8_t old = selected;
-                selected++;
-                menu_widget_update(screen1_menu,old,selected);
-            }
-            break;
-
-        case ENC_CCW:
-
-            if(selected > 0)
-            {
-                uint8_t old = selected;
-
-                selected--;
-
-                menu_widget_update(screen1_menu,old,selected);
-            }
-            break;
-
-        case ENC_PRESS:
-
-            switch(screen1_menu[selected].id)
-            {
-                case SCREEN1_A:
-                    menu_change(SCREEN_2);
-                    break;
-
-                case SCREEN1_B:
-                    menu_change(SCREEN_3);
-                    break;
-
-                case SCREEN1_C:
-                    menu_change(SCREEN_4);
-                    break;
-            }
-            break;
-
-        default:
-            break;
-    }
+    menu_widget_redraw_item(screen1_menu, 3, (selected == 3));
 }

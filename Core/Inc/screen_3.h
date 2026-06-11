@@ -1,5 +1,5 @@
-#ifndef SCREEN_DIAG_H
-#define SCREEN_DIAG_H
+#ifndef SCREEN_3_H
+#define SCREEN_3_H
 
 #include "screen.h"
 
