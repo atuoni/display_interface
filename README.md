@@ -40,6 +40,8 @@ The firmware demonstrates how to build scalable embedded user interfaces by sepa
 ### Input Device
 
 * KY-040 Rotary Encoder
+  
+<img width="1800" height="800" alt="menu_screen" src="https://github.com/user-attachments/assets/240bfff5-ba1f-48f6-a4f5-caea27be26f9" />
 
 ## Software Architecture
 
@@ -124,6 +126,14 @@ To improve user experience, the menu system does not redraw the entire screen du
 Only the affected menu items are updated:
 
 This reduces display refresh time and eliminates visible flicker.
+
+## Video Demonstration
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=YJJGMHajnGY">
+    <img src="https://img.youtube.com/vi/YJJGMHajnGY/0.jpg" alt="Video" width="800">
+  </a>
+</p>
 
 ## License
 
